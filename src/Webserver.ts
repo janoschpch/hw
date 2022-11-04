@@ -1,6 +1,6 @@
 import express from "express";
 import http from "http";
-import HwBackend from "./index";
+import HwBackend from "./HwBackend";
 
 export default class Webserver {
     app: Express.Application;
@@ -11,7 +11,7 @@ export default class Webserver {
         this.server = http.createServer(this.app);
         
         this.server.listen(port, host, () => {
-            instance.logger.info(`Webserver running on ${host}:${port}`);
+            instance.getLogger().info(`Webserver running on ${host}:${port}`);
         });
     }
 
