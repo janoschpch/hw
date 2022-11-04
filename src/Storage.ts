@@ -48,6 +48,20 @@ export default class Storage {
         return userObject;
     }
 
+    public async getUserByMail(email: string): Promise<User | undefined> {
+        const user = await this.instance.getPrismaClient().user.findUnique({
+            where: {
+                email: email
+            }
+        });
+
+        if (user == null) {
+            return undefined;
+        }
+
+        return await this.getUser(user.id);
+    }
+
     public async createUser(name: string, email: string, passwordHash: string): Promise<User> {
         const user = await this.instance.getPrismaClient().user.create({
             data: {
@@ -72,28 +86,104 @@ export default class Storage {
         });
     }
 
-    public async createHomework(user: User, subject: string, description: string): Promise<Homework> {
+    public async createHomework(user: User, subject: string, description: string, done: boolean): Promise<Homework> {
         const homework = await this.instance.getPrismaClient().homework.create({
             data: {
                 subject: subject,
                 description: description,
+                done: done,
                 userId: user.getId()
             }
         });
 
         const homeworkObject = new Homework(homework.id, homework.subject, homework.description, homework.createdAt, homework.done);
         user.addHomework(homeworkObject);
+        this.users.set(user.getId(), user, 60 * 60 * 1);
         return homeworkObject;
+    }
+
+    public async updateHomework(user: User, homework: Homework): Promise<void> {
+        await this.instance.getPrismaClient().homework.update({
+            where: {
+                id: homework.getId()
+            },
+            data: {
+                subject: homework.getSubject(),
+                description: homework.getDescription(),
+                done: homework.isDone()
+            }
+        });
+
+        this.users.set(user.getId(), user, 60 * 60 * 1);
     }
 
     public async deleteHomework(user: User, homework: Homework): Promise<void> {
         user.removeHomework(homework);
+        this.users.set(user.getId(), user, 60 * 60 * 1);
 
-        this.instance.getPrismaClient().homework.delete({
+        await this.instance.getPrismaClient().homework.delete({
             where: {
                 id: homework.getId()
             }
         });
+    }
+
+    public async userExists(email: string): Promise<boolean> {
+        const user = await this.instance.getPrismaClient().user.findUnique({
+            where: {
+                email: email
+            }
+        });
+
+        return user != null;
+    }
+
+    public async createSession(user: User, expires: Date): Promise<string> {
+        const session = await this.instance.getPrismaClient().session.create({
+            data: {
+                userId: user.getId(),
+                expiresAt: expires,
+                token: this.generateToken()
+            }
+        });
+
+        return session.token;
+    }
+
+    public async getSession(token: string): Promise<User | undefined> {
+        const session = await this.instance.getPrismaClient().session.findFirst({
+            where: {
+                token: token
+            }
+        });
+
+        if (session == null) {
+            return undefined;
+        }
+
+        if (session.expiresAt < new Date()) {
+            this.instance.getPrismaClient().session.delete({
+                where: {
+                    id: session.id
+                }
+            });
+            return undefined;
+        }
+
+        return await this.getUser(session.userId);
+    }
+
+    public async deleteSession(token: string): Promise<void> {
+        await this.instance.getPrismaClient().session.deleteMany({
+            where: {
+                token: token
+            }
+        });
+        return;
+    }
+
+    private generateToken(): string {
+        return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
     }
 
     private onRemoveCachedUser(user: User) {

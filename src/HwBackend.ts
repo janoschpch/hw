@@ -46,6 +46,10 @@ export default class HwBackend {
         return this.storage;
     }
 
+    public getConfig(): any {
+        return config;
+    }
+
 }
 
 new HwBackend();

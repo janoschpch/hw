@@ -7,12 +7,17 @@ export default class User {
     private passwordHash: string;
     private homework: Homework[];
 
+    added: boolean = false;
+
     constructor(id: number, name: string, email: string, passwordHash: string, homework: Homework[]) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.passwordHash = passwordHash;
         this.homework = homework;
+
+        this.addHomework = this.addHomework.bind(this);
+        this.removeHomework = this.removeHomework.bind(this);
     }
 
     public getId(): number {

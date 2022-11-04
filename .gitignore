@@ -1,5 +1,8 @@
 node_modules/
 
+# Dev files
+prisma/dev.db
+
 # Configs
 config/config.json
 config/mysql.json
