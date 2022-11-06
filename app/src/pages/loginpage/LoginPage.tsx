@@ -52,7 +52,7 @@ export default function LoginPage({ setToken }: Props) {
                     <Input type="text" placeholder="E-Mail Address" onChange={(email) => {
                         setEmail((email.target as HTMLInputElement).value as string);
                     }} key="email-address"/>
-                    <Input type="text" placeholder="Password" onChange={(password) => {
+                    <Input type="password" placeholder="Password" onChange={(password) => {
                         setPassword((password.target as HTMLInputElement).value as string);
                     }} key="password"/>
 
