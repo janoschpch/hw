@@ -46,10 +46,40 @@
     background: #244141;
 }
 
+.login-error {
+    margin: auto;
+    height: 50px;
+    width: 350px;
+    max-width: 100%;
+    position: fixed;
+    top: 32em;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background:rgb(180, 29, 29);
+    -webkit-box-shadow: 10px 5px 10px 5px rgba(0,0,0,0.15); 
+    box-shadow: 10px 5px 10px 5px rgba(0,0,0,0.35);
+    border-radius: 2px;
+    text-align: center;
+}
+
+.login-error span {
+    color: #fff;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 48px;
+}
+
 @media (max-width: 600px) {
     .login-container {
         width: 90%;
         height: 28em;
+        border-radius: 0;
+    }
+    .login-error {
+        top: 36em;
+        width: 90%;
+        height: 5em;
         border-radius: 0;
     }
 }

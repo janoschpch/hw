@@ -6,3 +6,6 @@ prisma/dev.db
 # Configs
 config/config.json
 config/mysql.json
+
+# Build files
+dist/

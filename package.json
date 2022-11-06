@@ -4,7 +4,9 @@
   "main": "src/index.ts",
   "license": "MIT",
   "scripts": {
-    "start": "ts-node src/HwBackend.ts"
+    "start": "ts-node src/HwBackend.ts",
+    "build": "tsc --outDir dist/ --rootDir src/",
+    "production": "yarn install && yarn build && cd app && yarn install && yarn build && cd .. && node dist/HwBackend.js"
   },
   "dependencies": {
     "@prisma/client": "4.5.0",

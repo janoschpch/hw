@@ -1,0 +1,62 @@
+.DashboardPage {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: #13171d;
+}
+
+.DashboardPage .homework-container {
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40em;
+    display: flex;
+    flex-direction: column;
+}
+
+.DashboardPage .homework-container h1 {
+    color: rgb(209, 205, 199);
+}
+
+.DashboardPage .homework-container .homework-card {
+    margin-bottom: 1em;
+    padding: 0.5em;
+    border: 1px solid rgb(209, 205, 199);
+    border-radius: 4px;
+}
+
+.DashboardPage .homework-container .homework-card header span {
+    font-size: 1.5em;
+}
+
+.DashboardPage .homework-container .homework-card footer span {
+    font-size: 0.6em;
+}
+
+.DashboardPage .homework-container span {
+    color: rgb(209, 205, 199);
+}
+
+.DashboardPage .homework-container .homework-card header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
+}
+
+.DashboardPage .homework-container .homework-card footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
+}
+
+.DashboardPage .homework-container .homework-card footer button {
+    background-color: #13171d;
+    border: none;
+    color: rgb(209, 205, 199);
+    padding: 0.5em;
+    font-size: 1em;
+    cursor: pointer;
+}

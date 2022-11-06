@@ -23,7 +23,7 @@ export default function RegisterPage() {
                         <button>Register</button>
                         <p>- or -</p>
                         <button onClick={() => {
-                            navigate("/login");
+                            navigate("/");
                         }}>Login</button>
                     </div>
                 </div>

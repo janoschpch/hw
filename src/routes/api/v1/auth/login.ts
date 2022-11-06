@@ -25,10 +25,10 @@ const login = (instance: HwBackend, req: Request, res: Response) => {
             date.setDate(date.getDate() + 30);
 
             instance.getStorage().createSession(user, date).then((session) => {
-                res.cookie("session", session, {
-                    expires: date
+                WebUtil.successData(res, WebUtil.SuccessStatus.OK, WebUtil.SuccessType.LOGGED_IN, {
+                    token: session,
+                    expires: date,
                 });
-                WebUtil.success(res, WebUtil.SuccessStatus.OK, WebUtil.SuccessType.LOGGED_IN);
             });
         });
     });
