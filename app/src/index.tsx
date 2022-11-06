@@ -9,7 +9,25 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <MantineProvider withGlobalStyles withNormalizeCSS>
+    <MantineProvider withGlobalStyles withNormalizeCSS withCSSVariables
+      theme={{
+        colorScheme: 'dark',
+        colors: {
+          dark: [
+            "#C1c3C5",
+            "#A6a8AB",
+            "#909396",
+            "#5c6066",
+            "#373b40",
+            "#13171d",
+            "#25272b",
+            "#13171d",
+            "#141617",
+            "#101213",
+          ],
+        },
+      }}
+    >
       <UserProvider>
         <App />
       </UserProvider>
