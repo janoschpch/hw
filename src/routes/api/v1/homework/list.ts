@@ -16,7 +16,7 @@ const list = (instance: HwBackend, user: User, req: Request, res: Response) => {
     });
 
     copy.sort((a, b) => {
-        return b.getCreated().getMilliseconds() - a.getCreated().getMilliseconds();
+        return a.getCreated().getMilliseconds() - b.getCreated().getMilliseconds();
     });
 
     const pages = Math.ceil(copy.length / 10);
