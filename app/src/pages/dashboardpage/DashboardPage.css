@@ -10,7 +10,8 @@
     top: 50px;
     left: 50%;
     transform: translateX(-50%);
-    width: 40em;
+    width: 80%;
+    max-width: 40em;
     display: flex;
     flex-direction: column;
 }
