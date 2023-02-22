@@ -48,7 +48,7 @@ export function UserProvider({ children }: any) {
 
     const logout = () => {
         localStorage.removeItem('token');
-        fetch('http://localhost:3001/api/v1/auth/logout', {
+        fetch('/api/v1/auth/logout', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

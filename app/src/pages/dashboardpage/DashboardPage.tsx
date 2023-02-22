@@ -1,13 +1,15 @@
 import { Checkbox } from "@mantine/core";
 import React, { ReactNode, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import HistoryIcon from '@mui/icons-material/History';
+import AddIcon from "@mui/icons-material/Add";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Header from "../../components/dashboard/header/Header";
 import { useUser } from "../../hooks/useUser";
 import "./DashboardPage.css";
 import HomeworkEditModal from "../../modals/homework/EditHomeworkModal";
+import HomeworkCreateModal from "../../modals/homework/CreateHomeworkModal";
+import { showNotification } from "@mantine/notifications";
 
 async function getUserHomework(page: number, token: string): Promise<any> {
     const response = await fetch("/api/v1/homework/list?page=" + page, {
@@ -34,6 +36,18 @@ async function updateHomework(token: string, data: any): Promise<any> {
     return response.json();
 }
 
+async function createHomework(token: string, data: any): Promise<any> {
+    const response = await fetch("/api/v1/homework/create", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `${token}`
+        },
+        body: JSON.stringify(data)
+    });
+    return response.json();
+}
+
 async function deleteHomework(token: string, id: number): Promise<any> {
     const response = await fetch("/api/v1/homework/delete", {
         method: "POST",
@@ -49,9 +63,12 @@ async function deleteHomework(token: string, id: number): Promise<any> {
 export default function DashboardPage() {
     const navigate = useNavigate();
     const { user, token, logout } = useUser();
+
     const [homework, setHomework] = useState<any[]>([]);
     const [editHomework, setEditHomework] = useState<any | null>(null);
     const [editOpen, setEditOpen] = useState(false);
+
+    const [createOpen, setCreateOpen] = useState(false);
 
 
     useEffect(() => {
@@ -88,8 +105,26 @@ export default function DashboardPage() {
                 }}
             />
 
+            <HomeworkCreateModal
+                opened={createOpen}
+                onClose={() => {
+                    setCreateOpen(false);
+                }}
+                onSave={(data) => {
+                    createHomework(token as string, data)
+                    .then((data) => {
+                        setHomework([...homework, data.data]);
+                    });
+                }}
+            />
+
+
             <div className="homework-container">
-                <h1>Hausaufgaben</h1>
+                {homework.length > 0 ? (
+                    <h1>Hausaufgaben</h1>
+                ) : (
+                    <h2>Keine Hausaufgaben zu erledigen</h2>
+                )}
 
                 <div className="homework-list">
                     {
@@ -134,6 +169,14 @@ export default function DashboardPage() {
                         })
                     }
                 </div>
+            </div>
+
+            <div className="actions">
+                <button className="create-homework" onClick={() => {
+                    setCreateOpen(true);
+                }}>
+                    <AddIcon />
+                </button>
             </div>
         </div>
     );

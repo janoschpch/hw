@@ -15,9 +15,9 @@ const create = (instance: HwBackend, user: User, req: Request, res: Response) =>
         WebUtil.successData(res, WebUtil.SuccessStatus.CREATED, WebUtil.SuccessType.CREATED, {
             id: homework.getId(),
             subject: homework.getSubject(),
-            desription: homework.getDescription(),
+            description: homework.getDescription(),
             done: homework.isDone(),
-            createdAt: homework.getCreated(),
+            created: homework.getCreated(),
         });
     });
 }

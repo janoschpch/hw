@@ -12,6 +12,7 @@
     -webkit-box-shadow: 10px 5px 10px 5px rgba(0,0,0,0.15); 
     box-shadow: 10px 5px 10px 5px rgba(0,0,0,0.35);
     border-radius: 2px;
+    color: black;
 }
 
 .login-container .login-header {

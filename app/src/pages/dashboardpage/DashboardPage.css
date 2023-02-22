@@ -5,6 +5,39 @@
     background-color: #13171d;
 }
 
+.DashboardPage .actions {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 1em;
+    margin-right: 1em;
+    display: flex;
+}
+
+.DashboardPage .actions button {
+    background-color: #17ac3f;
+    border: none;
+    color: black;
+    padding: 1em;
+    font-size: 1em;
+    cursor: pointer;
+    border-radius: 32px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.DashboardPage .actions svg {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.DashboardPage .actions button:hover {
+    background-color: #1f9e3f;
+}
+
 .DashboardPage .homework-container {
     position: absolute;
     top: 50px;
@@ -18,6 +51,12 @@
 
 .DashboardPage .homework-container h1 {
     color: rgb(209, 205, 199);
+}
+
+.DashboardPage .homework-container h2 {
+    color: rgb(209, 205, 199);
+    text-align: center;
+    font-size: 1.3em;
 }
 
 .DashboardPage .homework-container .homework-card {

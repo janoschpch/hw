@@ -1,17 +1,14 @@
 import { useEffect, useState } from "react";
 
-import { Button, Checkbox, Group, Modal, MultiSelect, TextInput } from "@mantine/core";
+import { Button, Checkbox, Group, Modal, TextInput } from "@mantine/core";
 
 import { useForm } from "@mantine/form";
-import axios from "axios";
-import { showNotification } from "@mantine/notifications";
 import { useUser } from "../../hooks/useUser";
 
-const HomeworkEditModal = (props: {
+const HomeworkCreateModal = (props: {
   opened: boolean;
   onClose: () => void;
   onSave: (data: any) => void;
-  homework: any;
 }) => {
   const user = useUser();
 
@@ -24,19 +21,22 @@ const HomeworkEditModal = (props: {
   });
 
   useEffect(() => {
-    if (props.homework) {
-      form.setValues({
-        subject: props.homework.subject,
-        description: props.homework.description,
-        done: props.homework.done
+    form.setValues({
+        subject: form.values.subject,
+        description: form.values.description,
+        done: form.values.done
       });
-    }
     // @ts-ignore: to prevent endless recursion
   }, [props.homework]);
 
-  const onHomeworkEdit = (values: { subject: string, description: string, done: boolean}) => {
+  const onHomeworkCreate = (values: { subject: string, description: string, done: boolean}) => {
     props.onSave({
         ...values
+    });
+    form.setValues({
+        subject: "",
+        description: "",
+        done: false
     });
     props.onClose();
   }
@@ -45,9 +45,8 @@ const HomeworkEditModal = (props: {
     <Modal
       opened={props.opened}
       onClose={props.onClose}
-      title="Hausaufgabe bearbeiten"
+      title="Hausaufgabe erstellen"
     >
-      {props.homework ? (
         <form
           style={{
             width: "100%",
@@ -55,7 +54,7 @@ const HomeworkEditModal = (props: {
             flexDirection: "column",
             gap: "1em",
           }}
-          onSubmit={form.onSubmit(onHomeworkEdit)}
+          onSubmit={form.onSubmit(onHomeworkCreate)}
         >
           <TextInput
             required={true}
@@ -87,13 +86,12 @@ const HomeworkEditModal = (props: {
             }}
           >
             <Button size="md" type="submit">
-              Speichern
+              Hinzufügen
             </Button>
           </Group>
         </form>
-      ) : null}
     </Modal>
   );
 };
 
-export default HomeworkEditModal;
+export default HomeworkCreateModal;
