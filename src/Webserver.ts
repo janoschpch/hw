@@ -39,6 +39,9 @@ export default class Webserver {
         this.registerAuthenticatedPostRoute("/api/v1/homework/create", (instance, user, req, res) => require("./routes/api/v1/homework/create").default(instance, user, req, res));
         this.registerAuthenticatedPostRoute("/api/v1/homework/delete", (instance, user, req, res) => require("./routes/api/v1/homework/delete").default(instance, user, req, res));
         this.registerAuthenticatedPostRoute("/api/v1/homework/update", (instance, user, req, res) => require("./routes/api/v1/homework/update").default(instance, user, req, res));
+        this.registerAuthenticatedPostRoute("/api/v1/homework/share", (instance, user, req, res) => require("./routes/api/v1/homework/share").default(instance, user, req, res));
+        this.registerAuthenticatedPostRoute("/api/v1/homework/shareState", (instance, user, req, res) => require("./routes/api/v1/homework/shareState").default(instance, user, req, res));
+        this.app.post("/api/v1/homework/shared", (req: Request, res: Response) => require("./routes/api/v1/homework/shared").default(instance, req, res));
 
         // WEB APP ROUTES
         this.app.use(express.static(path.join(__dirname, "../app/build/")));

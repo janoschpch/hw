@@ -14,11 +14,13 @@ model User {
   passwordHash  String
   homework      Homework[]
   sessions      Session[]
+  shared        Shared[]
 }
 
 model Session {
   id            Int      @id @default(autoincrement())
   expiresAt     DateTime
+  lastUsed      DateTime @default(now())
   token         String
   userId        Int
   deviceInfo    String   @default("Generic Device")
@@ -33,4 +35,16 @@ model Homework {
   description   String
   createdAt     DateTime @default(now())
   done          Boolean  @default(false)
+  shared        Shared[]
+}
+
+model Shared {
+  id            Int      @id @default(autoincrement())
+  homeworkId    Int
+  homework      Homework @relation(fields: [homeworkId], references: [id])
+  userId        Int
+  user          User     @relation(fields: [userId], references: [id])
+  accessToken   String
+  isShared      Boolean  @default(false)
+  views         Int      @default(0)
 }

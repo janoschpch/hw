@@ -9,6 +9,7 @@ import SettingsPage from './pages/settingspage/SettingsPage';
 import { MantineProvider } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
 import { ModalsProvider } from '@mantine/modals';
+import SharePage from './pages/sharepage/SharePage';
 
 function App() {
   const { token, setToken } = useUser();
@@ -25,6 +26,7 @@ function App() {
               setToken(token);
             }} />} />
             <Route path="/register" element={<RegisterPage />} />
+            <Route path="/share/:token" element={<SharePage />} />
           </Routes>
         </BrowserRouter>
       </div>
@@ -43,6 +45,7 @@ function App() {
                 <Routes>
                   <Route path="/dashboard" element={<DashboardPage />} />
                   <Route path='/settings' element={<SettingsPage />} />
+                  <Route path="/share/:token" element={<SharePage />} />
                 </Routes>
             </BrowserRouter>
           </ModalsProvider>

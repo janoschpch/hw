@@ -4,12 +4,14 @@ import { useNavigate } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ShareIcon from '@mui/icons-material/Share';
 import Header from "../../components/dashboard/header/Header";
 import { useUser } from "../../hooks/useUser";
 import "./DashboardPage.css";
 import HomeworkEditModal from "../../modals/homework/EditHomeworkModal";
 import HomeworkCreateModal from "../../modals/homework/CreateHomeworkModal";
 import { showNotification } from "@mantine/notifications";
+import HomeworkShareModal from "../../modals/homework/ShareHomeworkModal";
 
 async function getUserHomework(page: number, token: string): Promise<any> {
     const response = await fetch("/api/v1/homework/list?page=" + page, {
@@ -60,6 +62,18 @@ async function deleteHomework(token: string, id: number): Promise<any> {
     return response.json();
 }
 
+async function shareState(token: string, id: number): Promise<any> {
+    const response = await fetch("/api/v1/homework/shareState", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `${token}`
+        },
+        body: JSON.stringify({ id })
+    });
+    return response.json();
+}
+
 export default function DashboardPage() {
     const navigate = useNavigate();
     const { user, token, logout } = useUser();
@@ -70,12 +84,32 @@ export default function DashboardPage() {
 
     const [createOpen, setCreateOpen] = useState(false);
 
+    const [shareOpen, setShareOpen] = useState(false);
+    const [shareShared, setShareShared] = useState(false);
+    const [shareHomework, setShareHomework] = useState<any | null>(null);
+    const [shareUrl, setShareUrl] = useState("");
 
     useEffect(() => {
         getUserHomework(0, token as string).then((data) => {
             setHomework(data.data);
         });
     }, []);
+
+    const onShareClick = async (id: number) => {
+        const response = await shareState(token as string, id);
+        if (response.status === "success") {
+            setShareHomework(id);
+            setShareUrl(response.data.accessUrl);
+            setShareShared(response.data.shared);
+            setShareOpen(true);
+        } else {
+            showNotification({
+                title: "Error",
+                message: response.message,
+                color: "red",
+            });
+        }
+    }
 
     return (
         <div className="DashboardPage">
@@ -118,6 +152,16 @@ export default function DashboardPage() {
                 }}
             />
 
+            <HomeworkShareModal 
+                opened={shareOpen}
+                homework={shareHomework}
+                accessUrl={shareUrl}
+                shared={shareShared}
+                onClose={() => {
+                    setShareOpen(false);
+                    setShareHomework(null);
+                }}
+            />
 
             <div className="homework-container">
                 {homework.length > 0 ? (
@@ -149,6 +193,9 @@ export default function DashboardPage() {
                                         {new Date(item.created).toUTCString()}
                                     </span>
                                     <div className="homework-card-icons">
+                                        <button onClick={() => onShareClick(item.id)}>
+                                            <ShareIcon style={{color: "white", cursor: "pointer"}} />
+                                        </button>
                                         <button onClick={() => {
                                             setEditHomework(item);
                                             setEditOpen(true);

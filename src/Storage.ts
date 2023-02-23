@@ -2,6 +2,7 @@ import NodeCache from "node-cache";
 import HwBackend from "./HwBackend";
 import Homework from "./misc/Homework";
 import User from "./misc/User";
+import share from "./routes/api/v1/homework/share";
 
 export default class Storage {
     users: NodeCache;
@@ -143,6 +144,109 @@ export default class Storage {
         });
     }
 
+    public async hasBeenSharedBefore(user: User, homework: Homework): Promise<boolean> {
+        const shared = await this.instance.getPrismaClient().shared.findFirst({
+            where: {
+                homeworkId: homework.getId(),
+                userId: user.getId()
+            }
+        });
+
+        if (shared == null) {
+            return false;
+        }
+        return true;
+    }
+
+    public async isShared(user: User, homework: Homework): Promise<any> {
+        const shared = await this.instance.getPrismaClient().shared.findFirst({
+            where: {
+                homeworkId: homework.getId(),
+                userId: user.getId()
+            }
+        });
+
+        if (shared == null) {
+            return {
+                shared: false,
+                accessToken: null
+            };
+        }
+        return {
+            shared: shared.isShared,
+            accessToken: shared.accessToken
+        }
+    }
+
+    public async setShared(user: User, homework: Homework, shared: boolean): Promise<string> {
+        const sharedObject = await this.instance.getPrismaClient().shared.findFirst({
+            where: {
+                homeworkId: homework.getId(),
+                userId: user.getId()
+            }
+        });
+
+        if (sharedObject == null) {
+            const data = await this.instance.getPrismaClient().shared.create({
+                data: {
+                    homeworkId: homework.getId(),
+                    userId: user.getId(),
+                    isShared: shared,
+                    accessToken: this.generateToken()
+                }
+            });
+            return data.accessToken;
+        } else {
+            const data = await this.instance.getPrismaClient().shared.update({
+                where: {
+                    id: sharedObject.id
+                },
+                data: {
+                    isShared: shared
+                }
+            });
+            return data.accessToken;
+        }
+    }
+
+    public async getSharedHomework(token: string): Promise<any | undefined> {
+        const shared = await this.instance.getPrismaClient().shared.findFirst({
+            where: {
+                accessToken: token
+            }
+        });
+
+        if (shared == null || !shared.isShared) {
+            return undefined;
+        }
+
+        const homework = await this.instance.getPrismaClient().homework.findUnique({
+            where: {
+                id: shared.homeworkId
+            }
+        });
+
+        if (homework == null) {
+            return undefined;
+        }
+
+        await this.instance.getPrismaClient().shared.update({
+            where: {
+                id: shared.id
+            },
+            data: {
+                views: shared.views + 1
+            }
+        });
+
+        return {
+            subject: homework.subject,
+            description: homework.description,
+            createdAt: homework.createdAt,
+            user: await this.getUser(shared.userId)
+        };
+    }
+
     public async userExists(email: string): Promise<boolean> {
         const user = await this.instance.getPrismaClient().user.findUnique({
             where: {
@@ -185,6 +289,18 @@ export default class Storage {
             });
             return undefined;
         }
+
+        const date = new Date();
+        date.setHours(date.getHours() + 1);
+
+        await this.instance.getPrismaClient().session.update({
+            where: {
+                id: session.id
+            },
+            data: {
+                lastUsed: date
+            }
+        });
 
         return await this.getUser(session.userId);
     }
