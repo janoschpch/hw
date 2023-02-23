@@ -10,11 +10,25 @@ const accountInfo = async (instance: HwBackend, user: User, req: Request, res: R
         }
     });
 
+    let shared = await instance.getPrismaClient().shared.findMany({
+        where: {
+            userId: user.getId()
+        }
+    });
+
     WebUtil.successData(res, WebUtil.SuccessStatus.OK, WebUtil.SuccessType.OK, {
         id: user.getId(),
         name: user.getName(),
         email: user.getEmail(),
         homeworks: user.getHomework(),
+        shared: shared.map(share => {
+            return {
+                id: share.id,
+                homeworkId: share.homeworkId,
+                accessToken : share.accessToken,
+                isShared: share.isShared
+            }
+        }),
         sessions: sessions.map(session => {
             return {
                 id: session.id,
@@ -22,7 +36,7 @@ const accountInfo = async (instance: HwBackend, user: User, req: Request, res: R
                 deviceInfo: session.deviceInfo,
                 lastUsed: session.lastUsed
             }
-        })
+        }),
     });
 }
 
