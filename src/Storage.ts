@@ -137,6 +137,12 @@ export default class Storage {
         user.removeHomework(homework);
         this.users.set(user.getId(), user, 60 * 60 * 1);
 
+        await this.instance.getPrismaClient().shared.deleteMany({
+            where: {
+                homeworkId: homework.getId()
+            }
+        });
+
         await this.instance.getPrismaClient().homework.delete({
             where: {
                 id: homework.getId()
