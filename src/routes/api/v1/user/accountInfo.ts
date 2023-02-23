@@ -20,6 +20,7 @@ const accountInfo = async (instance: HwBackend, user: User, req: Request, res: R
         id: user.getId(),
         name: user.getName(),
         email: user.getEmail(),
+        role: user.getRole(),
         homeworks: user.getHomework(),
         shared: shared.map(share => {
             return {

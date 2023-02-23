@@ -12,6 +12,7 @@ model User {
   email         String   @unique
   name          String?
   passwordHash  String
+  role          String   @default("USER")
   homework      Homework[]
   sessions      Session[]
   shared        Shared[]

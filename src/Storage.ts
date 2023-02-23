@@ -43,7 +43,7 @@ export default class Storage {
             homeworkArray.push(new Homework(hw.id, hw.subject, hw.description, hw.createdAt, hw.done));
         });
 
-        const userObject = new User(user.id, user.name ? user.name : user.email, user.email, user.passwordHash, homeworkArray);
+        const userObject = new User(user.id, user.name ? user.name : user.email, user.email, user.passwordHash, user.role, homeworkArray);
 
         this.users.set(id, userObject, 60 * 60 * 1);
         return userObject;
@@ -72,7 +72,7 @@ export default class Storage {
             }
         });
 
-        const userObject = new User(user.id, user.name ? user.name : user.email, user.email, user.passwordHash, []);
+        const userObject = new User(user.id, user.name ? user.name : user.email, user.email, user.role, user.passwordHash, []);
         this.users.set(user.id, userObject, 60 * 60 * 1);
         return userObject;
     }
@@ -126,7 +126,8 @@ export default class Storage {
             data: {
                 name: user.getName(),
                 email: user.getEmail(),
-                passwordHash: user.getPasswordHash()
+                passwordHash: user.getPasswordHash(),
+                role: user.getRole()
             }
         });
 
@@ -334,7 +335,8 @@ export default class Storage {
             data: {
                 name: user.getName(),
                 email: user.getEmail(),
-                passwordHash: user.getPasswordHash()
+                passwordHash: user.getPasswordHash(),
+                role: user.getRole(),
             }
         });
 
