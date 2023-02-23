@@ -10,6 +10,9 @@ function App() {
   const { token, setToken } = useUser();
 
   if (!token) {
+    if (window.location.pathname != "/" && window.location.pathname != "/register") {
+      window.location.href = "/";
+    }
     return (
       <div className="App">
         <BrowserRouter>

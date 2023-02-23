@@ -9,6 +9,11 @@ const fetchUserdata = async (token: string) => {
         'Authorization': `${token}`
         }
     });
+
+    if (response.status == 401) {
+        localStorage.removeItem('token');
+        return { data: {} };
+    }
     
     return response.json();
 }
@@ -29,7 +34,12 @@ export function UserProvider({ children }: any) {
     function handleFetchUserdata() {
         if (token) {
             fetchUserdata(token).then((data) => {
-                setUser(data.data);
+                if (localStorage.getItem('token') != null) {
+                    setUser(data.data);
+                } else {
+                    setAccessToken(null);
+                    setUser({});
+                }
             });
         } else {
             localStorage.removeItem('token');
