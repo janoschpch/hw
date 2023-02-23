@@ -117,6 +117,21 @@ export default class Storage {
         this.users.set(user.getId(), user, 60 * 60 * 1);
     }
 
+    public async updateUser(user: User): Promise<void> {
+        await this.instance.getPrismaClient().user.update({
+            where: {
+                id: user.getId()
+            },
+            data: {
+                name: user.getName(),
+                email: user.getEmail(),
+                passwordHash: user.getPasswordHash()
+            }
+        });
+
+        this.users.set(user.getId(), user, 60 * 60 * 1);
+    }
+
     public async deleteHomework(user: User, homework: Homework): Promise<void> {
         user.removeHomework(homework);
         this.users.set(user.getId(), user, 60 * 60 * 1);
@@ -138,12 +153,13 @@ export default class Storage {
         return user != null;
     }
 
-    public async createSession(user: User, expires: Date): Promise<string> {
+    public async createSession(user: User, expires: Date, deviceInfo: string): Promise<string> {
         const session = await this.instance.getPrismaClient().session.create({
             data: {
                 userId: user.getId(),
                 expiresAt: expires,
-                token: this.generateToken()
+                token: this.generateToken(),
+                deviceInfo: deviceInfo
             }
         });
 

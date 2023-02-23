@@ -21,6 +21,7 @@ model Session {
   expiresAt     DateTime
   token         String
   userId        Int
+  deviceInfo    String   @default("Generic Device")
   user          User     @relation(fields: [userId], references: [id])
 }
 

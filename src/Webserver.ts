@@ -30,6 +30,9 @@ export default class Webserver {
 
         // USER ROUTES
         this.registerAuthenticatedGetRoute("/api/v1/user/userInfo", (instance, user, req, res) => require("./routes/api/v1/user/userInfo").default(instance, user, req, res));
+        this.registerAuthenticatedPostRoute("/api/v1/user/updateUserInfo", (instance, user, req, res) => require("./routes/api/v1/user/updateUserInfo").default(instance, user, req, res));
+        this.registerAuthenticatedPostRoute("/api/v1/user/changePassword", (instance, user, req, res) => require("./routes/api/v1/user/changePassword").default(instance, user, req, res));
+        this.registerAuthenticatedGetRoute("/api/v1/user/accountInfo", (instance, user, req, res) => require("./routes/api/v1/user/accountInfo").default(instance, user, req, res));
 
         // HOMEWORK ROUTES
         this.registerAuthenticatedGetRoute("/api/v1/homework/list", (instance, user, req, res) => require("./routes/api/v1/homework/list").default(instance, user, req, res));

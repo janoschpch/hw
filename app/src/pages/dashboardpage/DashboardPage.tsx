@@ -79,7 +79,7 @@ export default function DashboardPage() {
 
     return (
         <div className="DashboardPage">
-            <Header />
+            <Header tab="home"/>
 
             <HomeworkEditModal 
                 opened={editOpen}

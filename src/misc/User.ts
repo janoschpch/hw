@@ -18,6 +18,9 @@ export default class User {
 
         this.addHomework = this.addHomework.bind(this);
         this.removeHomework = this.removeHomework.bind(this);
+        this.setName = this.setName.bind(this);
+        this.setEmail = this.setEmail.bind(this);
+        this.setPasswordHash = this.setPasswordHash.bind(this);
     }
 
     public getId(): number {

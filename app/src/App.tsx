@@ -5,6 +5,10 @@ import './App.css';
 import RegisterPage from './pages/registerpage/RegisterPage';
 import DashboardPage from './pages/dashboardpage/DashboardPage';
 import { useUser, UserProvider } from './hooks/useUser';
+import SettingsPage from './pages/settingspage/SettingsPage';
+import { MantineProvider } from '@mantine/core';
+import { NotificationsProvider } from '@mantine/notifications';
+import { ModalsProvider } from '@mantine/modals';
 
 function App() {
   const { token, setToken } = useUser();
@@ -33,11 +37,16 @@ function App() {
 
   return (
     <div className="App">
-        <BrowserRouter>
-            <Routes>
-              <Route path="/dashboard" element={<DashboardPage />} />
-            </Routes>
-        </BrowserRouter>
+        <NotificationsProvider>
+          <ModalsProvider>
+            <BrowserRouter>
+                <Routes>
+                  <Route path="/dashboard" element={<DashboardPage />} />
+                  <Route path='/settings' element={<SettingsPage />} />
+                </Routes>
+            </BrowserRouter>
+          </ModalsProvider>
+        </NotificationsProvider>
     </div>
   );
 }

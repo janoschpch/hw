@@ -24,7 +24,9 @@ const login = (instance: HwBackend, req: Request, res: Response) => {
             const date = new Date();
             date.setDate(date.getDate() + 30);
 
-            instance.getStorage().createSession(user, date).then((session) => {
+            const deviceInfo = req.headers["user-agent"] || "Generic Device";
+
+            instance.getStorage().createSession(user, date, deviceInfo).then((session) => {
                 WebUtil.successData(res, WebUtil.SuccessStatus.OK, WebUtil.SuccessType.LOGGED_IN, {
                     token: session,
                     expires: date,

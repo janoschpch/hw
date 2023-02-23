@@ -20,6 +20,7 @@ const fetchUserdata = async (token: string) => {
 
 const initialState = {
     user: {} as any,
+    setUser: (user: any) => {},
     token: null as string | null,
     setToken: (token: string) => {},
     logout: () => {}
@@ -69,7 +70,7 @@ export function UserProvider({ children }: any) {
     }
 
     return (
-        <UserContext.Provider value={{ user, token, setToken, logout }}>
+        <UserContext.Provider value={{ user, setUser, token, setToken, logout }}>
             {children}
         </UserContext.Provider>
     );

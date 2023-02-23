@@ -16,11 +16,60 @@
     margin-left: 20px;
 }
 
-.Header .Header-logout {
+.Header .Header-tabs {
     margin-left: auto;
-    margin-right: 20px;
     margin-top: auto;
     margin-bottom: auto;
+    display: inline-block;
+    vertical-align: middle;
+    height: 100%;
+}
+
+.Header .Header-tab {
+    display: inline-block;
+    vertical-align: middle;
+    height: 100%;
+    width: 2.8em;
+    text-align: center;
+    cursor: pointer;
+}
+
+.Header .Header-tab-selected {
+    background-color: #293B4A;
+    border-bottom: 3px solid #1E5066;
+}
+
+.Header .Header-tab button {
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 500;
+    padding: 0;
+    margin: 0;
+    display: inline-block;
+    vertical-align: middle;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.Header .Header-tab svg {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.Header .Header-logout {
+    margin-left: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+    display: inline-block;
+    vertical-align: middle;
+    height: 100%;
+    width: 2.8em;
+    text-align: center;
 }
 
 .Header .Header-logout button {
@@ -33,4 +82,15 @@
     font-weight: 500;
     padding: 0;
     margin: 0;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.Header .Header-logout svg {
+    display: inline-block;
+    vertical-align: middle;
 }
