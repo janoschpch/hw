@@ -25,8 +25,9 @@ const login = (instance: HwBackend, req: Request, res: Response) => {
             date.setDate(date.getDate() + 30);
 
             const deviceInfo = req.headers["user-agent"] || "Generic Device";
+            const ip: any = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
 
-            instance.getStorage().createSession(user, date, deviceInfo).then((session) => {
+            instance.getStorage().createSession(user, date, deviceInfo, ip).then((session) => {
                 WebUtil.successData(res, WebUtil.SuccessStatus.OK, WebUtil.SuccessType.LOGGED_IN, {
                     token: session,
                     expires: date,

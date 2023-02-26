@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `Session` ADD COLUMN `ip` VARCHAR(191) NOT NULL DEFAULT '0.0.0.0';

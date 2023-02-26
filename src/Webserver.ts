@@ -24,15 +24,15 @@ export default class Webserver {
         this.app.get("/api/v1/", (req: Request, res: Response) => require("./routes/api/v1/index").default(instance, req, res));
         this.app.post("/api/v1/auth/login", (req: Request, res: Response) => require("./routes/api/v1/auth/login").default(instance, req, res));
         this.app.post("/api/v1/auth/logout", (req: Request, res: Response) => require("./routes/api/v1/auth/logout").default(instance, req, res));
-        if (instance.getConfig().allowRegistration) {
-            this.app.post("/api/v1/auth/register", (req: Request, res: Response) => require("./routes/api/v1/auth/register").default(instance, req, res));
-        }
+        this.app.post("/api/v1/auth/register", (req: Request, res: Response) => require("./routes/api/v1/auth/register").default(instance, req, res));
 
         // USER ROUTES
         this.registerAuthenticatedGetRoute("/api/v1/user/userInfo", (instance, user, req, res) => require("./routes/api/v1/user/userInfo").default(instance, user, req, res));
         this.registerAuthenticatedPostRoute("/api/v1/user/updateUserInfo", (instance, user, req, res) => require("./routes/api/v1/user/updateUserInfo").default(instance, user, req, res));
         this.registerAuthenticatedPostRoute("/api/v1/user/changePassword", (instance, user, req, res) => require("./routes/api/v1/user/changePassword").default(instance, user, req, res));
         this.registerAuthenticatedGetRoute("/api/v1/user/accountInfo", (instance, user, req, res) => require("./routes/api/v1/user/accountInfo").default(instance, user, req, res));
+        this.registerAuthenticatedGetRoute("/api/v1/user/sessions", (instance, user, req, res) => require("./routes/api/v1/user/sessions").default(instance, user, req, res));
+        this.registerAuthenticatedPostRoute("/api/v1/user/revokeSession", (instance, user, req, res) => require("./routes/api/v1/user/revokeSession").default(instance, user, req, res));
 
         // HOMEWORK ROUTES
         this.registerAuthenticatedGetRoute("/api/v1/homework/list", (instance, user, req, res) => require("./routes/api/v1/homework/list").default(instance, user, req, res));
@@ -42,6 +42,9 @@ export default class Webserver {
         this.registerAuthenticatedPostRoute("/api/v1/homework/share", (instance, user, req, res) => require("./routes/api/v1/homework/share").default(instance, user, req, res));
         this.registerAuthenticatedPostRoute("/api/v1/homework/shareState", (instance, user, req, res) => require("./routes/api/v1/homework/shareState").default(instance, user, req, res));
         this.app.post("/api/v1/homework/shared", (req: Request, res: Response) => require("./routes/api/v1/homework/shared").default(instance, req, res));
+
+        // ADMIN ROUTES
+        this.registerAuthenticatedGetRoute("/api/v1/admin/listUsers", (instance, user, req, res) => require("./routes/api/v1/admin/listUsers").default(instance, user, req, res));
 
         // WEB APP ROUTES
         this.app.use(express.static(path.join(__dirname, "../app/build/")));

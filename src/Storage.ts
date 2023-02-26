@@ -264,13 +264,14 @@ export default class Storage {
         return user != null;
     }
 
-    public async createSession(user: User, expires: Date, deviceInfo: string): Promise<string> {
+    public async createSession(user: User, expires: Date, deviceInfo: string, ip: string): Promise<string> {
         const session = await this.instance.getPrismaClient().session.create({
             data: {
                 userId: user.getId(),
                 expiresAt: expires,
                 token: this.generateToken(),
-                deviceInfo: deviceInfo
+                deviceInfo: deviceInfo,
+                ip: ip
             }
         });
 
@@ -312,6 +313,14 @@ export default class Storage {
         return await this.getUser(session.userId);
     }
 
+    public async getSessions(user: User): Promise<any[]> {
+        return await this.instance.getPrismaClient().session.findMany({
+            where: {
+                userId: user.getId()
+            }
+        });
+    }
+
     public async deleteSession(token: string): Promise<void> {
         await this.instance.getPrismaClient().session.deleteMany({
             where: {
@@ -319,6 +328,16 @@ export default class Storage {
             }
         });
         return;
+    }
+
+    public async revokeSession(user: User, id: number) {
+        this.getSessions(user).then((sessions) => {
+            sessions.forEach((session) => {
+                if (session.id == id) {
+                    this.deleteSession(session.token);
+                }
+            });
+        });
     }
 
     private generateToken(): string {

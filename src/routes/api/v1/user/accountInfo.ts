@@ -35,7 +35,8 @@ const accountInfo = async (instance: HwBackend, user: User, req: Request, res: R
                 id: session.id,
                 expiresAt: session.expiresAt,
                 deviceInfo: session.deviceInfo,
-                lastUsed: session.lastUsed
+                lastUsed: session.lastUsed,
+                ip: session.ip,
             }
         }),
     });

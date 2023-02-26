@@ -3,6 +3,7 @@ import { useUser } from "../../../hooks/useUser";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExitIcon from '@mui/icons-material/ExitToApp'
 import HomeIcon from '@mui/icons-material/Home';
+import AdminPanelIcon from '@mui/icons-material/AdminPanelSettings';
 import SettingsIcon from '@mui/icons-material/Settings';
 import './Header.css';
 import { useNavigate } from "react-router-dom";
@@ -30,6 +31,13 @@ export default function Header(props: {
                         <SettingsIcon />
                     </button>
                 </div>
+                {user.role === "ADMIN" ? (
+                    <div className={"Header-tab" + (props.tab === "admin" ? " Header-tab-selected" : "")}>
+                        <button onClick={() => navigate("/admin")}>
+                            <AdminPanelIcon />
+                        </button>
+                    </div>
+                ) : null}
                 <div className="Header-logout">
                     <button onClick={() => {
                         logout();

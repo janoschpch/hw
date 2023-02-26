@@ -25,6 +25,7 @@ model Session {
   token         String
   userId        Int
   deviceInfo    String   @default("Generic Device")
+  ip            String   @default("0.0.0.0")
   user          User     @relation(fields: [userId], references: [id])
 }
 
@@ -48,4 +49,9 @@ model Shared {
   accessToken   String
   isShared      Boolean  @default(false)
   views         Int      @default(0)
+}
+
+model Config {
+  key           String   @id @unique
+  value         String
 }
