@@ -16,7 +16,7 @@ function App() {
   const { token, setToken } = useUser();
 
   if (!token) {
-    if (window.location.pathname != "/" && window.location.pathname != "/register") {
+    if (window.location.pathname != "/" && window.location.pathname != "/register" && !window.location.pathname.startsWith("/share")) {
       window.location.href = "/";
     }
     return (
